@@ -38,4 +38,14 @@ export class RedisRepository {
     static async expire(prefix: string, key: string, expiry: number): Promise<void> {
         await RedisClientFactory.getInstance().expire(`${prefix}:${key}`, expiry);
     }
+
+    static async info(param: string): Promise<string> {
+        return await RedisClientFactory.getInstance().info(param);
+    }
+
+    static async call(param1: string, param2: string): Promise<string> {
+        const data = await RedisClientFactory.getInstance().call(param1, param2);
+        console.log(data)
+        return String(data);
+    }
 }

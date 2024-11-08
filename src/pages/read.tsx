@@ -134,7 +134,7 @@ export default function Read() {
                         type="submit"
                         className="w-full bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors"
                     >
-                        Buscar
+                        Search
                     </button>
                 </form>
             </div>

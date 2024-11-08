@@ -6,6 +6,11 @@ export default function Create() {
   const [setItems, setSetItems] = useState<String[]>([]);
   const [setValue, setSetValue] = useState<string>('');
   const [duplicatedText, setDuplicatedText] = useState<string>('');
+  const [activeForm, setActiveForm] = useState(null);
+
+  const toggleForm = (form: any) => {
+    setActiveForm((prevForm) => (prevForm === form ? null : form));
+  };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSetValue(e.currentTarget.value);
@@ -110,141 +115,154 @@ export default function Create() {
 
       {/* Set Form */}
       <div className="w-full max-w-xl bg-gray-900 shadow-xl rounded-lg p-6 mb-8">
-        <h3 className="text-2xl font-semibold text-white mb-4">Sets</h3>
-        <form onSubmit={handleSetsSubmit}
+        <h3
+          onClick={() => toggleForm("sets")}
+          className="text-2xl font-semibold text-white cursor-pointer"
         >
-          <div className="mb-4">
-            <label htmlFor="setKey" className="block text-gray-300">Key:</label>
-            <input
-              type="text"
-              name="setKey"
-              id="setKey"
-              required
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
-              autoComplete="off"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="setValue" className="block mb-1 text-gray-300">Valor:</label>
-            <div className="flex gap-5">
+          Sets
+        </h3>
+        {activeForm === "sets" && (
+          <form className="mt-4" onSubmit={handleSetsSubmit}>
+            <div className="mb-4">
+              <label htmlFor="setKey" className="block text-gray-300">Key:</label>
               <input
                 type="text"
-                name="setValue"
-                id="setValue"
-                value={setValue}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+                name="setKey"
+                id="setKey"
+                required
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
                 autoComplete="off"
               />
-              <button onClick={handleAddBtn} className="w-2/4 bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors" type="button">Agregar</button>
             </div>
-            <p className="text-red-600">{duplicatedText}</p>
 
-            {setItems && setItems.map((item, index) => (
-              <div key={index} className="flex items-center gap-2 mt-3">
-                <div className="w-full p-3 rounded-md bg-gray-800 text-neutral-500">{item}</div>
-                <button
-                  onClick={() => handleRemoveBtn(item)}
-                  className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-white hover:bg-gray-700 focus:outline-none transition-colors"
-                  type="button"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+            <div className="mb-4">
+              <label htmlFor="setValue" className="block mb-1 text-gray-300">Valor:</label>
+              <div className="flex gap-5">
+                <input
+                  type="text"
+                  name="setValue"
+                  id="setValue"
+                  value={setValue}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-700 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  autoComplete="off"
+                />
+                <button onClick={handleAddBtn} className="w-2/4 bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors" type="button">Agregar</button>
               </div>
-            ))}
-          </div>
+              <p className="text-red-600">{duplicatedText}</p>
 
-          <div className="mb-4">
-            <label htmlFor="setTtl" className="block text-gray-300">TTL:</label>
-            <input
-              type="text"
-              name="setTtl"
-              id="setTtl"
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
-              autoComplete="off"
-            />
-          </div>
+              {setItems && setItems.map((item, index) => (
+                <div key={index} className="flex items-center gap-2 mt-3">
+                  <div className="w-full p-3 rounded-md bg-gray-800 text-neutral-500">{item}</div>
+                  <button
+                    onClick={() => handleRemoveBtn(item)}
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-white hover:bg-gray-700 focus:outline-none transition-colors"
+                    type="button"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="setScope" className="block text-gray-300">Scope:</label>
-            <select
-              name="setScope"
-              id="setScope"
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+            <div className="mb-4">
+              <label htmlFor="setTtl" className="block text-gray-300">TTL:</label>
+              <input
+                type="text"
+                name="setTtl"
+                id="setTtl"
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+                autoComplete="off"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="setScope" className="block text-gray-300">Scope:</label>
+              <select
+                name="setScope"
+                id="setScope"
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                <option value="session">Sesión</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors"
             >
-              <option value="session">Sesión</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors"
-          >
-            Guardar
-          </button>
-        </form>
+              Save
+            </button>
+          </form>
+        )}
       </div>
 
       {/* String Form */}
       <div className="w-full max-w-xl bg-gray-900 shadow-xl rounded-lg p-6">
-        <h3 className="text-2xl font-semibold text-white mb-4">Strings</h3>
-        <form onSubmit={handleStringsSubmit} >
-          <div className="mb-4">
-            <label htmlFor="stringKey" className="block text-gray-300">Key:</label>
-            <input
-              type="text"
-              name="stringKey"
-              id="stringKey"
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
-              autoComplete="off"
-            />
-          </div>
+        <h3
+          onClick={() => toggleForm("strings")}
+          className="text-2xl font-semibold text-white cursor-pointer"
+        >
+          Strings
+        </h3>
+        {activeForm === "strings" && (
+          <form className="mt-4" onSubmit={handleStringsSubmit} >
+            <div className="mb-4">
+              <label htmlFor="stringKey" className="block text-gray-300">Key:</label>
+              <input
+                type="text"
+                name="stringKey"
+                id="stringKey"
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+                autoComplete="off"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="stringValue" className="block text-gray-300">Valor:</label>
-            <input
-              type="text"
-              name="stringValue"
-              id="stringValue"
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
-              autoComplete="off"
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="stringValue" className="block text-gray-300">Valor:</label>
+              <input
+                type="text"
+                name="stringValue"
+                id="stringValue"
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+                autoComplete="off"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="stringTtl" className="block text-gray-300">TTL:</label>
-            <input
-              type="text"
-              name="stringTtl"
-              id="stringTtl"
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
-              autoComplete="off"
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="stringTtl" className="block text-gray-300">TTL:</label>
+              <input
+                type="text"
+                name="stringTtl"
+                id="stringTtl"
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+                autoComplete="off"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="stringScope" className="block text-gray-300">Scope:</label>
-            <select
-              name="stringScope"
-              id="stringScope"
-              className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+            <div className="mb-4">
+              <label htmlFor="stringScope" className="block text-gray-300">Scope:</label>
+              <select
+                name="stringScope"
+                id="stringScope"
+                className="w-full p-3 border border-gray-700 rounded-md mt-1 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                <option value="param">Parámetro</option>
+                <option value="emailsign">Firma</option>
+                <option value="module">Módulo</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors"
             >
-              <option value="param">Parámetro</option>
-              <option value="emailsign">Firma</option>
-              <option value="module">Módulo</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-red-600 text-white p-3 rounded-md hover:bg-red-700 transition-colors"
-          >
-            Guardar
-          </button>
-        </form>
+              Save
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
