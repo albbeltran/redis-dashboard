@@ -1,21 +1,23 @@
+import Link from "next/link";
+
 export function Menu() {
     return (
         <nav className="w-full max-w-lg rounded-lg p-4 mb-8">
         <ul className="flex justify-center gap-6">
           <li>
-            <a href="/analyze" className="text-lg text-white hover:text-red-600 hover:underline transition-all">
+            <Link href="/analyze" className="text-lg text-white hover:text-red-600 hover:underline transition-all">
               Analyze
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/create" className="text-lg text-white hover:text-red-600 hover:underline transition-all">
+            <Link href="/create" className="text-lg text-white hover:text-red-600 hover:underline transition-all">
               Create
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/read" className="text-lg text-white hover:text-red-600 hover:underline transition-all">
+            <Link href="/read" className="text-lg text-white hover:text-red-600 hover:underline transition-all">
               Read
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

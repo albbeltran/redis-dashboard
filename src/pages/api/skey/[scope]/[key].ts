@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { RedisRepository } from "@/redis/redis.repository";
+import { handleBack } from "@/utils/handleError";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { scope, key } = req.query as { scope: string, key: string };
@@ -9,8 +10,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const data = await RedisRepository.sismember(`cdc-${scope}`, key, member);
         if (!data) throw new Error("Oops! Not found on Redis");
         res.json({ message: "Is on Redis" });
-    } catch (error: any) {
-        const errMssg = error.message ? error.message : "Oops! Unknown error";
+    } catch (error: unknown) {
+        const errMssg = handleBack(error);
         res.status(500).json({ message: errMssg });
     }
 };

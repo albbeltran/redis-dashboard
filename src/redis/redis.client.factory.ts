@@ -12,7 +12,7 @@ export class RedisClientFactory {
                 port: Number(process.env.NEXT_PUBLIC_REDIS_PORT),
                 ...(process.env.NEXT_PUBLIC_REDIS_USERNAME ? { username: process.env.NEXT_PUBLIC_REDIS_USERNAME } : {}),
                 ...(process.env.NEXT_PUBLIC_REDIS_PASSWORD ? { password: process.env.NEXT_PUBLIC_REDIS_PASSWORD } : {}),
-                retryStrategy: function (times: any) {
+                retryStrategy: function (times: number) {
                     console.log(`HOST: ${process.env.NEXT_PUBLIC_REDIS_HOST}`);
                     console.log(`PORT: ${process.env.NEXT_PUBLIC_REDIS_PORT}`);
                     console.log(`Reintentando conexión a Redis. Intento número: ${times}`);
@@ -24,12 +24,12 @@ export class RedisClientFactory {
                 console.log('Connected to Redis');
             });
 
-            RedisClientFactory.instance.on('error', (err: any) => {
+            RedisClientFactory.instance.on('error', (err: Error) => {
                 console.error('Redis error:', err.message);
                 console.error('Error details:', err);
             });
 
-            RedisClientFactory.instance.on('reconnecting', (time: any) => {
+            RedisClientFactory.instance.on('reconnecting', (time: number) => {
                 console.log(`Reconnecting to Redis after ${time}ms...`);
             });
         }

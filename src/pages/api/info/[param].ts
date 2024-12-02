@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { RedisRepository } from "@/redis/redis.repository";
+import { handleBack } from "@/utils/handleError";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { param } = req.query as { param: string };
@@ -12,8 +13,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         } else data = await RedisRepository.info(param);
         if (!data) throw new Error("Oops! Metrics not found");
         res.json({ message: "I got it!", data });
-    } catch (error: any) {
-        const errMssg = error.message ? error.message : "Oops! Unknown error";
-        res.status(400).json({ message: errMssg });
+    } catch (error: unknown) {
+        const errMssg = handleBack(error);
+        res.status(500).json({ message: errMssg });
     }
 };

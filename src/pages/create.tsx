@@ -1,15 +1,16 @@
 import { Menu } from "@/components/menu";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import { handleFront } from "@/utils/handleError";
 
 export default function Create() {
-  const [setItems, setSetItems] = useState<String[]>([]);
+  const [setItems, setSetItems] = useState<string[]>([]);
   const [setValue, setSetValue] = useState<string>('');
   const [duplicatedText, setDuplicatedText] = useState<string>('');
-  const [activeForm, setActiveForm] = useState(null);
+  const [activeForm, setActiveForm] = useState<string>("");
 
-  const toggleForm = (form: any) => {
-    setActiveForm((prevForm) => (prevForm === form ? null : form));
+  const toggleForm = (form: string) => {
+    setActiveForm((prevForm) => (prevForm === form ? "" : form));
   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -18,7 +19,7 @@ export default function Create() {
 
   useEffect(() => {
     const duplicated = setItems.filter(item => item === setValue);
-    if (duplicated && duplicated.length) setDuplicatedText('Valor duplicado.');
+    if (duplicated && duplicated.length) setDuplicatedText('Already on list.');
     else setDuplicatedText('');
   }, [setValue]);
 
@@ -28,7 +29,7 @@ export default function Create() {
     setSetValue('');
   }
 
-  function handleRemoveBtn(value: String) {
+  function handleRemoveBtn(value: string) {
     setSetItems(prevItems => prevItems.filter(item => item !== value));
   }
 
@@ -79,31 +80,21 @@ export default function Create() {
 
       const data = await response.json();
 
-      data && data.message && toast(data.message, {
-        style: {
-          background: '#d93b2e',
-          color: '#fff',
-          borderRadius: '8px',
-          padding: '16px',
-          fontWeight: 'bold',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        },
-        icon: response.status === 200 ? '🔥' : '🙈',
-      });
-    } catch (error: any) {
-      console.log(error);
-      toast(error.message ? error.message : error, {
-        style: {
-          background: '#d93b2e',
-          color: '#fff',
-          borderRadius: '8px',
-          padding: '16px',
-          fontWeight: 'bold',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        },
-        icon: '🙈',
-      });
-      return null;
+      if (data && data.message) {
+        toast(data.message, {
+          style: {
+            background: '#d93b2e',
+            color: '#fff',
+            borderRadius: '8px',
+            padding: '16px',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          },
+          icon: response.status === 200 ? '🔥' : '🙈',
+        });
+      }
+    } catch (error: unknown) {
+      handleFront(error);
     }
   }
 
@@ -136,7 +127,7 @@ export default function Create() {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="setValue" className="block mb-1 text-gray-300">Valor:</label>
+              <label htmlFor="setValue" className="block mb-1 text-gray-300">Value:</label>
               <div className="flex gap-5">
                 <input
                   type="text"
@@ -221,7 +212,7 @@ export default function Create() {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="stringValue" className="block text-gray-300">Valor:</label>
+              <label htmlFor="stringValue" className="block text-gray-300">Value:</label>
               <input
                 type="text"
                 name="stringValue"

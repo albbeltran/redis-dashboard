@@ -15,15 +15,15 @@ export class RedisRepository {
         await RedisClientFactory.getInstance().hset(`${prefix}:${key}`, field, value);
     }
 
-    static async hget(prefix: string, key: string, field: string): Promise<string | null | any> {
+    static async hget(prefix: string, key: string, field: string): Promise<string | null | number> {
         return await RedisClientFactory.getInstance().hget(`${prefix}:${key}`, field);
     }
 
-    static async sadd(prefix: string, key: string, value: string): Promise<string | null | any> {
+    static async sadd(prefix: string, key: string, value: string): Promise<string | null | number> {
         return await RedisClientFactory.getInstance().sadd(`${prefix}:${key}`, value);
     }
 
-    static async sismember(prefix: string, key: string, member: string): Promise<string | null | any> {
+    static async sismember(prefix: string, key: string, member: string): Promise<string | null | number> {
         return await RedisClientFactory.getInstance().sismember(`${prefix}:${key}`, member);
     }
 

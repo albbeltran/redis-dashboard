@@ -1,6 +1,7 @@
 import { Menu } from "@/components/menu";
 import React, { useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import { handleFront } from "@/utils/handleError";
 
 export default function Read() {
     const [dataStructure, setDataStructure] = useState<string>('set');
@@ -39,31 +40,21 @@ export default function Read() {
 
             const data = await response.json();
 
-            data && data.message && toast(data.message, {
-                style: {
-                    background: '#d93b2e',
-                    color: '#fff',
-                    borderRadius: '8px',
-                    padding: '16px',
-                    fontWeight: 'bold',
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                },
-                icon: response.status === 200 ? '🔥' : '🙈',
-            });
-        } catch (error: any) {
-            console.log(error);
-            toast(error.message ? error.message : error, {
-                style: {
-                    background: '#d93b2e',
-                    color: '#fff',
-                    borderRadius: '8px',
-                    padding: '16px',
-                    fontWeight: 'bold',
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                },
-                icon: '🙈',
-            });
-            return null;
+            if (data && data.message) {
+                toast(data.message, {
+                    style: {
+                        background: '#08203e',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '16px',
+                        fontWeight: 'bold',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                    },
+                    icon: response.status === 200 ? '🔥' : '🙈',
+                });
+            }
+        } catch (error: unknown) {
+            handleFront(error);
         }
     }
 
